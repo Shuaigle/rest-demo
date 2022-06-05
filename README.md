@@ -1,2 +1,2 @@
 # rest-demo
-practice springboot up and running
+practice book of springboot up and running
