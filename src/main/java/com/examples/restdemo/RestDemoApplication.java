@@ -74,4 +74,32 @@ class RestApiDemoController {
 		return Optional.empty();
 	}
 
+	// spring boot catch Coffee object then transit it to JSON type and return it to request side with default
+	@PostMapping("/coffees")
+	Coffee postCoffee(@RequestBody Coffee coffee) {
+		coffees.add(coffee);
+		return coffee;
+	}
+
+	// update coffee if it existed, otherwise create it
+	@PutMapping("/coffees/{id}")
+	Coffee putCoffee(@PathVariable String id, @RequestBody Coffee coffee) {
+		// if not found, coffeeIndex = -1
+		int coffeeIndex = -1;
+
+		for (Coffee c: coffees) {
+			if (c.getId().equals(id)) {
+				coffeeIndex = coffees.indexOf(c);
+				coffees.set(coffeeIndex, coffee);
+			}
+		}
+
+		return (coffeeIndex == -1) ? postCoffee(coffee) : coffee;
+	}
+
+	@DeleteMapping("/coffees/{id}")
+	void deleteCoffee(@PathVariable String id) {
+		coffees.removeIf(c -> c.getId().equals(id));
+	}
+
 }
